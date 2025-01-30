@@ -109,17 +109,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         return $middlewareQueue;
     }
 
-    /**
-     * Register application container services.
-     *
-     * @param \Cake\Core\ContainerInterface $container The Container to update.
-     * @return void
-     * @link https://book.cakephp.org/5/en/development/dependency-injection.html#dependency-injection
-     */
-    public function services(ContainerInterface $container): void
-    {
-    }
-
         /**
      * Returns a service provider instance.
      *
