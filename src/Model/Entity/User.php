@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Authentication\PasswordHasher\DefaultPasswordHasher;
 
 /**
  * User Entity
@@ -24,10 +25,14 @@ class User extends Entity
      *
      * @var array<string, bool>
      */
+
+    
+    protected array $_virtual = ['confirm_password'];
     protected array $_accessible = [
         'name' => true,
         'email' => true,
         'password' => true,
+        'confirm_password' => true
     ];
 
     /**
@@ -37,5 +42,13 @@ class User extends Entity
      */
     protected array $_hidden = [
         'password',
+        'confirm_password'
     ];
+
+    // Automatically hash passwords when they are changed.
+    protected function _setPassword(string $password): string
+    {
+        $hasher = new DefaultPasswordHasher();
+        return $hasher->hash($password);
+    }
 }

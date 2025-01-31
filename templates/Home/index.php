@@ -76,6 +76,31 @@ endif;
 </head>
 <body>
     <header>
+        <nav class="top-nav">
+            <div class="top-nav-links">
+                <?php
+                $identity = $this->getRequest()->getAttribute('identity');
+                if ($identity) {
+                    echo 'Welcome, ' .($identity->name);
+                    echo ' | ';
+                    echo $this->Html->link('Logout', [
+                        'controller' => 'Users',
+                        'action' => 'logout',
+                    ]);
+                } else {
+                    echo $this->Html->link('Login', [
+                        'controller' => 'Users',
+                        'action' => 'login',
+                    ]);
+                    echo ' | ';
+                    echo $this->Html->link('Register', [
+                        'controller' => 'Users',
+                        'action' => 'add',
+                    ]);
+                }
+                ?>
+            </div>
+        </nav>
         <div class="container text-center">
             <a href="https://cakephp.org/" target="_blank" rel="noopener">
                 <img alt="CakePHP" src="https://cakephp.org/v2/img/logos/CakePHP_Logo.svg" width="350" />

@@ -138,12 +138,6 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
         $service->loadAuthenticator('Authentication.Session');
         $service->loadAuthenticator('Authentication.Form', [
             'fields' => $fields,
-            'loginUrl' => Router::url([
-                'prefix' => false,
-                'plugin' => null,
-                'controller' => 'Users',
-                'action' => 'login',
-            ]),
         ]);
 
         // Load identifiers
@@ -151,4 +145,16 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
 
         return $service;
     }
+
+    /**
+     * Register application container services.
+     *
+     * @param \Cake\Core\ContainerInterface $container The Container to update.
+     * @return void
+     * @link https://book.cakephp.org/5/en/development/dependency-injection.html#dependency-injection
+     */
+    public function services(ContainerInterface $container): void
+    {
+    }
+
 }

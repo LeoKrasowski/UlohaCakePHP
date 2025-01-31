@@ -20,6 +20,7 @@ class UsersController extends AppController
         parent::initialize();
 
         $this->Authentication->allowUnauthenticated(['login']);
+        $this->Authentication->allowUnauthenticated(['login', 'add']);
     }
 
     /**
@@ -31,7 +32,7 @@ class UsersController extends AppController
     {
         $query = $this->Users->find();
         $users = $this->paginate($query);
-
+        
         $this->set(compact('users'));
     }
 
@@ -122,15 +123,25 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         if ($result->isValid()) {
             $this->Flash->success(__('Login successful'));
+            $target = $this->Authentication->getLoginRedirect() ?? '/home';
+                return $this->redirect($target);
+            
             $redirect = $this->Authentication->getLoginRedirect();
             if ($redirect) {
                 return $this->redirect($redirect);
             }
+               
         }
 
         // Display error if user submitted and authentication failed
         if ($this->request->is('post')) {
             $this->Flash->error(__('Invalid username or password'));
         }
+    }
+
+    public function logout()
+    {
+        $this->Authentication->logout();
+        return $this->redirect('/');
     }
 }

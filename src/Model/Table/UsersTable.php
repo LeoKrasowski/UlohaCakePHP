@@ -59,13 +59,33 @@ class UsersTable extends Table
         $validator
             ->email('email')
             ->requirePresence('email', 'create')
-            ->notEmptyString('email');
+            ->notEmptyString('email')
+            ->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('password')
             ->maxLength('password', 171)
             ->requirePresence('password', 'create')
-            ->notEmptyString('password');
+            ->notEmptyString('password')
+            ->minLength('password', 8, 'Password must be at least 8 characters long')
+            ->add('password', 'containNumber', [
+                'rule' => function($value) {
+                    return (bool)preg_match('/[0-9]/', $value);
+                },
+                'message' => 'Password must contain at least one number'
+            ])
+            ->add('password', 'containUppercase', [
+                'rule' => function($value) {
+                    return (bool)preg_match('/[A-Z]/', $value);
+                },
+                'message' => 'Password must contain at least one uppercase letter'
+            ]);
+
+        $validator
+            ->scalar('confirm_password')
+            ->requirePresence('confirm_password', 'create')
+            ->notEmptyString('confirm_password')
+            ->sameAs('confirm_password', 'password', 'Passwords do not match');
 
         return $validator;
     }
